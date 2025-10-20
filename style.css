@@ -1,0 +1,266 @@
+/* --- 1. Variáveis Globais (Modo Claro é o padrão) --- */
+:root {
+    --bg-color: #FFFFFF;
+    --text-color: #111111;
+    --card-bg: #FFFFFF;
+    --border-color: #EAEAEA;
+    --category-color: #007CF0;
+
+    --font-heading: 'Merriweather', serif; /* Fonte serifada para títulos */
+    --font-body: 'Lato', sans-serif;      /* Fonte sans-serif para o resto */
+}
+
+/* --- 2. Definições do Modo Escuro --- */
+/* Quando o <html> tiver o atributo [data-theme="dark"]... */
+[data-theme="dark"] {
+    --bg-color: #111111;
+    --text-color: #EAEAEA;
+    --card-bg: #1C1C1C;
+    --border-color: #333333;
+}
+
+/* --- 3. Estilos Gerais --- */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: var(--font-body);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+/* --- 4. Navbar --- */
+.navbar {
+    border-bottom: 1px solid var(--border-color);
+    padding: 1rem 0;
+    background-color: var(--bg-color);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.navbar .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 2rem; /* Reduz padding do container dentro da navbar */
+}
+
+.logo {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+}
+
+.navbar nav {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.navbar nav a {
+    text-decoration: none;
+    color: var(--text-color);
+    font-weight: 700;
+}
+
+/* --- 5. Botão de Tema (JS) --- */
+#theme-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2rem;
+}
+
+/* Oculta o ícone que não está ativo */
+[data-theme="light"] .moon { display: none; }
+[data-theme="dark"] .sun { display: none; }
+
+/* --- 6. Grade de Artigos (CSS Grid) --- */
+.article-grid {
+    display: grid;
+    /* Cria colunas responsivas:
+      - Tenta preencher (auto-fill) com colunas de no mínimo 300px.
+      - 1fr faz com que elas cresçam e ocupem o espaço por igual.
+    */
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.article-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.article-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* --- 7. Estilos do Lazy Load (JS) --- */
+.card-image {
+    width: 100%;
+    height: 200px; /* Altura fixa para as imagens */
+}
+
+.card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Garante que a imagem cubra a área sem distorcer */
+    
+    /* Estado inicial (antes de carregar) */
+    opacity: 0;
+    transition: opacity 0.5s ease-out;
+}
+
+/* Estado final (quando o JS adicionar a classe 'loaded') */
+.card-image img.loaded {
+    opacity: 1;
+}
+
+.card-content {
+    padding: 1.5rem;
+}
+
+.category {
+    color: var(--category-color);
+    font-weight: 700;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+}
+
+.card-content h2 {
+    font-family: var(--font-heading);
+    font-size: 1.4rem;
+    margin: 0.5rem 0;
+}
+
+.byline {
+    font-size: 0.9rem;
+    color: #888;
+}
+
+/* --- 8. Estilos dos Links dos Cards (index.html) --- */
+/* Remove a cor azul e o sublinhado dos links no título */
+.article-card h2 a {
+    text-decoration: none;
+    color: inherit; /* 'inherit' faz o link ter a mesma cor do H2 */
+}
+
+/* Deixa o logo na navbar sem sublinhado também */
+.logo a {
+    text-decoration: none;
+    color: inherit;
+}
+
+
+/* --- 9. Estilos da Página de Artigo (barry-lyndon.html) --- */
+.article-content {
+    max-width: 800px; /* Limita a largura para melhor leitura */
+    margin: 2rem auto; /* Centraliza o artigo */
+}
+
+.article-header {
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.article-header h1 {
+    font-family: var(--font-heading);
+    font-size: 3rem;
+    line-height: 1.2;
+    margin: 0.5rem 0;
+}
+
+.article-hero-image {
+    margin: 2rem 0;
+}
+
+.article-hero-image img {
+    width: 100%;
+    border-radius: 4px;
+}
+
+.article-hero-image figcaption {
+    font-size: 0.9rem;
+    color: #888;
+    text-align: center;
+    margin-top: 0.5rem;
+}
+
+.article-body p {
+    font-family: 'Merriweather', serif;
+    font-size: 1.1rem;
+    line-height: 1.7; /* Espaçamento entre linhas, essencial para leitura */
+    margin-bottom: 1.5rem;
+}
+
+/* --- 10. Estilos da Lista de Artigos (vanguarda-hungara.html) --- */
+
+/* Configura a lista <ol> */
+.article-list {
+    list-style-type: none;  /* Esconde os números padrão (1., 2.) */
+    padding-left: 0;        /* Remove o recuo padrão da lista */
+    counter-reset: film-counter; /* Cria um "contador" chamado film-counter e o inicia em 0 */
+}
+
+/* Configura cada item <li> */
+.article-list li {
+    counter-increment: film-counter; /* A cada <li>, adiciona +1 ao contador */
+    position: relative;        /* Essencial para posicionar o número */
+    padding-left: 4rem;      /* Cria espaço à esquerda para o nosso número personalizado */
+    margin-bottom: 2.5rem;   /* Espaço entre os itens da lista */
+}
+
+/* Cria o nosso número personalizado */
+.article-list li::before {
+    content: counter(film-counter); /* O "conteúdo" deste elemento será o valor do contador */
+    
+    /* Posição */
+    position: absolute;
+    left: 0;
+    top: -0.2rem; /* Alinha o número com o topo do título */
+
+    /* Estilo do Número (A parte legal) */
+    font-family: var(--font-heading); /* Usa a fonte serifada dos títulos */
+    font-size: 3rem;                  /* Tamanho grande */
+    font-weight: 700;
+    line-height: 1;
+    color: var(--category-color);     /* Usa a cor de destaque (azul) */
+}
+
+/* Estiliza o título do filme dentro da lista */
+.article-list li h3 {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    margin-bottom: 0.25rem;
+}
+
+/* Estiliza o nome do diretor */
+.article-list li .list-director {
+    font-family: var(--font-body);
+    font-style: italic;
+    color: #888;
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+    line-height: 1.4;
+}
+
+/* Estiliza o parágrafo de descrição */
+.article-list li p {
+    font-size: 1rem;      /* Um pouco menor que o texto principal para dar contraste */
+    line-height: 1.6;
+    margin-bottom: 0;   /* Remove o espaçamento padrão de parágrafo */
+}
