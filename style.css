@@ -1,266 +1,199 @@
-/* --- 1. Variáveis Globais (Modo Claro é o padrão) --- */
+/* Reseta e define a paleta de cores "Letterboxd" */
 :root {
-    --bg-color: #FFFFFF;
-    --text-color: #111111;
-    --card-bg: #FFFFFF;
-    --border-color: #EAEAEA;
-    --category-color: #007CF0;
-
-    --font-heading: 'Merriweather', serif; /* Fonte serifada para títulos */
-    --font-body: 'Lato', sans-serif;      /* Fonte sans-serif para o resto */
-}
-
-/* --- 2. Definições do Modo Escuro --- */
-/* Quando o <html> tiver o atributo [data-theme="dark"]... */
-[data-theme="dark"] {
-    --bg-color: #111111;
-    --text-color: #EAEAEA;
-    --card-bg: #1C1C1C;
-    --border-color: #333333;
-}
-
-/* --- 3. Estilos Gerais --- */
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+    --fundo-escuro: #14181C;
+    --fundo-card: #2C3440;
+    --texto-claro: rgb(116, 124, 133);
+    --texto-branco: #FFFFFF;
+    --verde-letterboxd: #00E054;
+    --fonte-titulo: 'Merriweather', serif;
+    --fonte-corpo: "League Spartan", sans-serif;
 }
 
 body {
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    font-family: var(--font-body);
-    transition: background-color 0.3s ease, color 0.3s ease;
+    background-color: var(--fundo-escuro);
+    color: var(--texto-claro);
+    font-family: var(--fonte-corpo);
+    margin: 0;
+    padding: 20px;
 }
 
 .container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 2rem;
 }
 
-/* --- 4. Navbar --- */
-.navbar {
-    border-bottom: 1px solid var(--border-color);
-    padding: 1rem 0;
-    background-color: var(--bg-color);
-    position: sticky;
-    top: 0;
-    z-index: 10;
+/* --- Página de Busca (index.html) --- */
+
+header {
+    margin-bottom: 30px;
 }
 
-.navbar .container {
+.logo-title {
+    font-family: var(--fonte-titulo);
+    color: var(--texto-branco);
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#form-pesquisa {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 2rem; /* Reduz padding do container dentro da navbar */
 }
 
-.logo {
-    font-family: var(--font-heading);
-    font-size: 1.5rem;
-}
-
-.navbar nav {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-}
-
-.navbar nav a {
-    text-decoration: none;
-    color: var(--text-color);
-    font-weight: 700;
-}
-
-/* --- 5. Botão de Tema (JS) --- */
-#theme-toggle {
-    background: none;
-    border: none;
-    cursor: pointer;
+#input-pesquisa {
+    flex-grow: 1; /* Ocupa o máximo de espaço */
     font-size: 1.2rem;
+    padding: 12px 15px;
+    border: 2px solid var(--fundo-card);
+    background-color: var(--fundo-card);
+    color: var(--texto-branco);
+    border-radius: 5px;
 }
 
-/* Oculta o ícone que não está ativo */
-[data-theme="light"] .moon { display: none; }
-[data-theme="dark"] .sun { display: none; }
+#form-pesquisa button {
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 12px 20px;
+    margin-left: 10px;
+    background-color: var(--verde-letterboxd);
+    color: var(--fundo-escuro);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
 
-/* --- 6. Grade de Artigos (CSS Grid) --- */
-.article-grid {
+.placeholder-text {
+    text-align: center;
+    font-size: 1.2rem;
+    margin-top: 50px;
+}
+
+/* Grid para os posters */
+#container-resultados {
     display: grid;
-    /* Cria colunas responsivas:
-      - Tenta preencher (auto-fill) com colunas de no mínimo 300px.
-      - 1fr faz com que elas cresçam e ocupem o espaço por igual.
-    */
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 2rem;
+    /* Cria colunas automáticas de 150px */
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 20px;
 }
 
-.article-card {
-    background: var(--card-bg);
-    border: 1px solid var(--border-color);
-    border-radius: 4px;
+.movie-card {
+    background-color: var(--fundo-card);
+    border-radius: 5px;
     overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    transition: transform 0.2s ease;
 }
 
-.article-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+.movie-card:hover {
+    transform: scale(1.05);
+    border: 2px solid var(--verde-letterboxd);
 }
 
-/* --- 7. Estilos do Lazy Load (JS) --- */
-.card-image {
+.movie-card img {
     width: 100%;
-    height: 200px; /* Altura fixa para as imagens */
+    height: auto;
+    display: block;
 }
 
-.card-image img {
+/* --- Página de Detalhes (movie.html) --- */
+
+.back-link {
+    color: var(--verde-letterboxd);
+    text-decoration: none;
+    font-size: 1rem;
+    margin-bottom: 20px;
+    display: inline-block;
+}
+
+.movie-details-layout {
+    display: flex;
+    margin-top: 20px;
+    gap: 30px;
+}
+
+.movie-details-layout img {
+    width: 300px;
+    height: auto;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+.movie-info h1 {
+    font-family: var(--fonte-titulo);
+    color: var(--texto-branco);
+    font-size: 3rem;
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.movie-info #movie-tagline {
+    font-style: italic;
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+}
+
+.movie-info h2 {
+    font-family: var(--fonte-titulo);
+    color: var(--texto-branco);
+    font-size: 1.5rem;
+    border-bottom: 2px solid var(--fundo-card);
+    padding-bottom: 5px;
+    margin-top: 30px;
+}
+
+.movie-info #movie-overview {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--texto-branco);
+}
+
+.movie-stats {
+    margin-top: 20px;
+    display: flex;
+    gap: 20px;
+    font-weight: bold;
+}
+
+/* --- Estilos do Hero Slider --- */
+
+/* --- Estilos do Hero Slider (Versão Manual) --- */
+
+#hero-slider {
+    width: 100%;
+    height: 500px; /* Você pode ajustar essa altura */
+    position: relative; /* Essencial para posicionar os slides */
+    overflow: hidden; /* Esconde partes da imagem que sobrarem */
+    border-radius: 8px;
+    margin-bottom: 30px; /* Espaço entre o slider e a barra de busca */
+    background-color: var(--fundo-card); /* Cor de fundo enquanto carrega */
+}
+
+/* Cada slide (agora é uma tag <img>) */
+#hero-slider .slide {
+    position: absolute; /* Coloca todos os slides no mesmo lugar */
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Garante que a imagem cubra a área sem distorcer */
+    object-fit: cover; /* Faz a imagem cobrir o espaço sem distorcer */
     
-    /* Estado inicial (antes de carregar) */
-    opacity: 0;
-    transition: opacity 0.5s ease-out;
+    /* A mágica do "fade" */
+    opacity: 0; /* Começa invisível */
+    transition: opacity 1.5s ease-in-out; /* Duração do fade */
 }
 
-/* Estado final (quando o JS adicionar a classe 'loaded') */
-.card-image img.loaded {
-    opacity: 1;
+/* O slide que está ativo (visível) */
+#hero-slider .slide.active {
+    opacity: 1; /* Fica visível */
 }
 
-.card-content {
-    padding: 1.5rem;
-}
-
-.category {
-    color: var(--category-color);
-    font-weight: 700;
-    font-size: 0.8rem;
-    text-transform: uppercase;
-}
-
-.card-content h2 {
-    font-family: var(--font-heading);
-    font-size: 1.4rem;
-    margin: 0.5rem 0;
-}
-
-.byline {
-    font-size: 0.9rem;
-    color: #888;
-}
-
-/* --- 8. Estilos dos Links dos Cards (index.html) --- */
-/* Remove a cor azul e o sublinhado dos links no título */
-.article-card h2 a {
-    text-decoration: none;
-    color: inherit; /* 'inherit' faz o link ter a mesma cor do H2 */
-}
-
-/* Deixa o logo na navbar sem sublinhado também */
-.logo a {
-    text-decoration: none;
-    color: inherit;
-}
-
-
-/* --- 9. Estilos da Página de Artigo (barry-lyndon.html) --- */
-.article-content {
-    max-width: 800px; /* Limita a largura para melhor leitura */
-    margin: 2rem auto; /* Centraliza o artigo */
-}
-
-.article-header {
-    margin-bottom: 2rem;
-    text-align: center;
-}
-
-.article-header h1 {
-    font-family: var(--font-heading);
-    font-size: 3rem;
-    line-height: 1.2;
-    margin: 0.5rem 0;
-}
-
-.article-hero-image {
-    margin: 2rem 0;
-}
-
-.article-hero-image img {
-    width: 100%;
-    border-radius: 4px;
-}
-
-.article-hero-image figcaption {
-    font-size: 0.9rem;
-    color: #888;
-    text-align: center;
-    margin-top: 0.5rem;
-}
-
-.article-body p {
-    font-family: 'Merriweather', serif;
-    font-size: 1.1rem;
-    line-height: 1.7; /* Espaçamento entre linhas, essencial para leitura */
-    margin-bottom: 1.5rem;
-}
-
-/* --- 10. Estilos da Lista de Artigos (vanguarda-hungara.html) --- */
-
-/* Configura a lista <ol> */
-.article-list {
-    list-style-type: none;  /* Esconde os números padrão (1., 2.) */
-    padding-left: 0;        /* Remove o recuo padrão da lista */
-    counter-reset: film-counter; /* Cria um "contador" chamado film-counter e o inicia em 0 */
-}
-
-/* Configura cada item <li> */
-.article-list li {
-    counter-increment: film-counter; /* A cada <li>, adiciona +1 ao contador */
-    position: relative;        /* Essencial para posicionar o número */
-    padding-left: 4rem;      /* Cria espaço à esquerda para o nosso número personalizado */
-    margin-bottom: 2.5rem;   /* Espaço entre os itens da lista */
-}
-
-/* Cria o nosso número personalizado */
-.article-list li::before {
-    content: counter(film-counter); /* O "conteúdo" deste elemento será o valor do contador */
-    
-    /* Posição */
+/* Um "filtro" escuro sobre a imagem, para o texto não sumir */
+#hero-slider::after {
+    content: '';
     position: absolute;
+    top: 0;
     left: 0;
-    top: -0.2rem; /* Alinha o número com o topo do título */
-
-    /* Estilo do Número (A parte legal) */
-    font-family: var(--font-heading); /* Usa a fonte serifada dos títulos */
-    font-size: 3rem;                  /* Tamanho grande */
-    font-weight: 700;
-    line-height: 1;
-    color: var(--category-color);     /* Usa a cor de destaque (azul) */
-}
-
-/* Estiliza o título do filme dentro da lista */
-.article-list li h3 {
-    font-family: var(--font-heading);
-    font-size: 1.5rem;
-    margin-bottom: 0.25rem;
-}
-
-/* Estiliza o nome do diretor */
-.article-list li .list-director {
-    font-family: var(--font-body);
-    font-style: italic;
-    color: #888;
-    margin-bottom: 0.5rem;
-    font-size: 1rem;
-    line-height: 1.4;
-}
-
-/* Estiliza o parágrafo de descrição */
-.article-list li p {
-    font-size: 1rem;      /* Um pouco menor que o texto principal para dar contraste */
-    line-height: 1.6;
-    margin-bottom: 0;   /* Remove o espaçamento padrão de parágrafo */
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to top, rgba(2, 13, 26, 0.9) 10%, rgba(20, 24, 28, 0.2) 100%);
 }
